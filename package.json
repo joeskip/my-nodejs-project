@@ -1,0 +1,37 @@
+{
+  "name": "my-nodejs-project",
+  "version": "1.0.0",
+  "description": "Node.js学习项目",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "npm run clean && babel src -d target --watch",
+    "compile": "npm run clean && babel src -d target",
+    "clean": "rm -Rf target",
+    "dev": "export NODE_ENV=dev && export DEBUG='my:*' && node target/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joeskip/my-nodejs-project.git"
+  },
+  "author": "yang tong<3135342483@qq.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/joeskip/my-nodejs-project/issues"
+  },
+  "homepage": "https://github.com/joeskip/my-nodejs-project#readme",
+  "dependencies": {
+    "body-parser": "^1.15.0",
+    "debug": "^2.2.0",
+    "express": "^4.13.4",
+    "mongoose": "^4.4.6",
+    "multiparty": "^4.1.2",
+    "project-core": "0.0.16",
+    "serve-static": "^1.10.2"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.6.5",
+    "babel-preset-es2015": "^2.0.3",
+    "babel-preset-stage-3": "^6.5.0"
+  }
+}
