@@ -3,7 +3,7 @@
 /**
  * pratice Node.js project
  *
- * @author Mingyi Zheng <badb0y520@gmail.com>
+ * @author Zongmin Lei <leizongmin@gmail.com>
  */
 
 import mongoose from 'mongoose';

@@ -3,7 +3,7 @@
 /**
  * pratice Node.js project
  *
- * @author Mingyi Zheng <badb0y520@gmail.com>
+ * @author Zongmin Lei <leizongmin@gmail.com>
  */
 
 import mongoose from 'mongoose';
@@ -15,8 +15,10 @@ module.exports = function (done) {
 
   const User = new Schema({
     name: {type: String, unique: true},
+    email: {type: String, unique: true},
     password: {type: String},
     nickname: {type: String},
+    about: {type: String},
   });
 
   $.mongodb.model('User', User);

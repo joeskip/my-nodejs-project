@@ -1,3 +1,19 @@
-{
-  "presets": ["es2015", "stage-3"]
+﻿{
+  "presets": [
+    ["env",{
+        "targets": {
+            "chrome": 52,
+            "browsers": ["last 2 versions","safari 7"]
+        }
+    }]
+  ],
+  "plugins": [[
+    "transform-runtime",
+    {
+      "helpers": false,
+      "polyfill": false,
+      "regenerator": true,
+      "moduleName": "babel-runtime"
+    }
+  ]]
 }
