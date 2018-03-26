@@ -3,7 +3,7 @@
 /**
  * pratice Node.js project
  *
- * @author Zongmin Lei <leizongmin@gmail.com>
+ * @author Mingyi Zheng <badb0y520@gmail.com>
  */
 
 import validator from 'validator';
@@ -29,7 +29,13 @@ module.exports = function (done) {
     }
 
     params.password = $.utils.encryptPassword(params.password.toString());
-    const user = new $.model.User(params);
+    const user = new $.model.User({
+      name: params.name,
+      email: params.email,
+      nickname: params.nickname,
+      password: params.password,
+      about: params.about,
+    });
     return user.save();
 
   });

@@ -3,7 +3,7 @@
 /**
  * pratice Node.js project
  *
- * @author Zongmin Lei <leizongmin@gmail.com>
+ * @author Mingyi Zheng <badb0y520@gmail.com>
  */
 
 import mongoose from 'mongoose';
@@ -14,7 +14,7 @@ module.exports = function (done) {
   const ObjectId = Schema.ObjectId;
 
   const Topic = new Schema({
-    authorId: {type: ObjectId, index: true},
+    author: {type: ObjectId, index: true, ref: 'User'},
     title: {type: String, trim: true},
     content: {type: String},
     tags: [{type: String, index: true}],
@@ -22,8 +22,7 @@ module.exports = function (done) {
     updatedAt: {type: Date, index: true},
     lastCommentedAt: {type: Date, index: true},
     comments: [{
-      cid: ObjectId,
-      authorId: ObjectId,
+      author: {type: ObjectId, ref: 'User'},
       content: String,
       createdAt: Date,
     }],

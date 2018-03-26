@@ -3,7 +3,7 @@
 /**
  * pratice Node.js project
  *
- * @author Zongmin Lei <leizongmin@gmail.com>
+ * @author Mingyi Zheng <badb0y520@gmail.com>
  */
 
 import mongoose from 'mongoose';
@@ -19,6 +19,7 @@ module.exports = function (done) {
     password: {type: String},
     nickname: {type: String},
     about: {type: String},
+    isAdmin: {type: Boolean},
   });
 
   $.mongodb.model('User', User);

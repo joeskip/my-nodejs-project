@@ -3,7 +3,7 @@
 /**
  * pratice Node.js project
  *
- * @author Zongmin Lei <leizongmin@gmail.com>
+ * @author Mingyi Zheng <badb0y520@gmail.com>
  */
 
 import path from 'path';
@@ -60,5 +60,5 @@ $.init((err) => {
     console.log('inited [env=%s]', $.env);
   }
 
-  require('./test');
+//  require('./test');
 });
