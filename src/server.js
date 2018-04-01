@@ -50,6 +50,8 @@ $.init.load(path.resolve(__dirname, 'middlewares'));
 // 加载路由
 $.init.load(path.resolve(__dirname, 'routes'));
 
+// 初始化limiter
+$.init.load(path.resolve(__dirname, 'init', 'limiter.js'));
 
 // 初始化
 $.init((err) => {
