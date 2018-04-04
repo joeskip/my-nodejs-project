@@ -26,8 +26,8 @@ module.exports = function (done) {
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({extended: false}));
   app.use(multipart());
-  app.use(session({	
-    resave: true,
+  app.use(session({
+	resave: true,
 	saveUninitialized: true,
     secret: $.config.get('web.session.secret'),
     store: new RedisStore($.config.get('web.session.redis')),

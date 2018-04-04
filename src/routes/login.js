@@ -6,6 +6,8 @@
  * @author Mingyi Zheng <badb0y520@gmail.com>
  */
 
+import nodemailer from 'nodemailer';
+
 module.exports = function (done) {
 
 
@@ -18,6 +20,14 @@ module.exports = function (done) {
 
     if (!req.body.password) return next(new Error('missing password'));
 
+    // 频率限制
+    const key = `login:${req.body.name}:${$.utils.date('Ymd')}`;
+    {
+      const limit = 5;
+      const ok = await $.limiter.incr(key, limit);
+      if (!ok) throw new Error('out of limit');
+    }
+
     const user = await $.method('user.get').call(req.body);
     if (!user) return next(new Error('user does not exists'));
 
@@ -27,6 +37,16 @@ module.exports = function (done) {
 
     req.session.user = user;
     req.session.logout_token = $.utils.randomString(20);
+
+    if (req.session.github_user) {
+      await $.method('user.update').call({
+        _id: user._id,
+        githubUsername: req.session.github_user.username,
+      });
+      delete req.session.github_user;
+    }
+
+    await $.limiter.reset(key);
 
     res.apiSuccess({token: req.session.logout_token});
 
@@ -58,11 +78,42 @@ module.exports = function (done) {
 
 
   $.router.post('/api/signup', async function (req, res, next) {
+	// 频率限制
+    {
+      const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+      const key = `signup:${ip}:${$.utils.date('Ymd')}`;
+      const limit = 2;
+      const ok = await $.limiter.incr(key, limit);
+      if (!ok) throw new Error('out of limit');
+    }
+	const user = await $.method('user.add').call(req.body);
 
-    const user = await $.method('user.add').call(req.body);
+    var transporter = nodemailer.createTransport({
+		host: 'smtp.sina.com',
+		secureConnection: true,
+		port: 25,
+		auth: {
+			user: 'xiaobing_python@sina.com',
+			pass: 'admin123'
+			}
+	});
 
+	var mailOptions = {
+		from: 'xiaobing_python@sina.com',
+		to: user.email,
+		subject: '欢迎',
+		text: 'welcome 注册论坛系统~~~~'
+	};
+
+	transporter.sendMail(mailOptions, function(error, info){
+		if(error){
+			console.log(error);
+		}else{
+			console.log('Message sent: ' + info.response);
+		}
+	})
+	
     res.apiSuccess({user: user});
-
   });
 
 
