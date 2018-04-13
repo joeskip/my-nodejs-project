@@ -6,8 +6,6 @@
  * @author Mingyi Zheng <badb0y520@gmail.com>
  */
 
-import nodemailer from 'nodemailer';
-
 module.exports = function (done) {
 
 
@@ -78,7 +76,8 @@ module.exports = function (done) {
 
 
   $.router.post('/api/signup', async function (req, res, next) {
-	// 频率限制
+
+    // 频率限制
     {
       const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
       const key = `signup:${ip}:${$.utils.date('Ymd')}`;
@@ -86,34 +85,20 @@ module.exports = function (done) {
       const ok = await $.limiter.incr(key, limit);
       if (!ok) throw new Error('out of limit');
     }
-	const user = await $.method('user.add').call(req.body);
 
-    var transporter = nodemailer.createTransport({
-		host: 'smtp.sina.com',
-		secureConnection: true,
-		port: 25,
-		auth: {
-			user: 'xiaobing_python@sina.com',
-			pass: 'admin123'
-			}
-	});
+    const user = await $.method('user.add').call(req.body);
 
-	var mailOptions = {
-		from: 'xiaobing_python@sina.com',
-		to: user.email,
-		subject: '欢迎',
-		text: 'welcome 注册论坛系统~~~~'
-	};
+    $.method('mail.sendTemplate').call({
+      to: user.email,
+      subject: '欢迎',
+      template: 'welcome',
+      data: user,
+    }, err => {
+      if (err) console.error(err);
+    });
 
-	transporter.sendMail(mailOptions, function(error, info){
-		if(error){
-			console.log(error);
-		}else{
-			console.log('Message sent: ' + info.response);
-		}
-	})
-	
     res.apiSuccess({user: user});
+
   });
 
 
